@@ -39,5 +39,5 @@ zip-safe = false
 package-dir = {"" = "src"}
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "qiskit_aer"]
 
