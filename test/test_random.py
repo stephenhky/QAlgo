@@ -1,5 +1,7 @@
 
-from qiskit.circuit import QuantumCircuit
+from math import sqrt
+
+from qiskit.circuit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
 
@@ -7,9 +9,22 @@ from qalgo.random import perfect_coin_gate
 
 
 def test_perfect_coin() -> None:
-    qc = QuantumCircuit(1, 1)
-    qc.append(perfect_coin_gate())
-    transpiled_qc = transpile(qc)
+    # build the circuit
+    qr = QuantumRegister(1)
+    cr = ClassicalRegister(1)
+    qc = QuantumCircuit(qr, cr)
+    qc.append(perfect_coin_gate(), [qr[0]])
+    qc.measure(qr[0], cr[0])
 
-    simulator = StatevectorSimulator()
-    simulation_results = simulator.run(transpiled_qc)
+    # simulation
+    nbshots = 1024
+    simulator = StatevectorSimulator(max_shot_size=1024)
+    transpiled_qc = transpile(qc, simulator, optimization_level=0)
+    job = simulator.run(transpiled_qc, shots=nbshots)
+    result = job.result()
+    count_dict = result.get_counts(qc)
+
+    # statistics test
+    mean = nbshots * 0.5
+    std = sqrt(nbshots * 0.5 * 0.5)
+    assert mean - 3*std < count_dict['0'] < mean + 3*std
