@@ -1,5 +1,6 @@
 
-from qiskit.circuit import Gate, QuantumCircuit, QuantumRegister, ClassicalRegister
+from qiskit.circuit import Gate, QuantumCircuit, QuantumRegister
+
 
 def perfect_coin_gate() -> Gate:
     qr = QuantumRegister(1)
