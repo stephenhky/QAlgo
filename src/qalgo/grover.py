@@ -1,7 +1,7 @@
 
 from math import floor, pi, sqrt
 
-from qiskit.circuit import Gate, QuantumCircuit, QuantumRegister, ClassicalRegister
+from qiskit.circuit import Gate, QuantumCircuit, QuantumRegister
 from qiskit.circuit.library import ZGate
 
 
@@ -23,10 +23,7 @@ def GroverDiffusionGate(oracle_gate: Gate, nb_state_qubits: int) -> Gate:
         raise WrongQubitNumberException()
 
     qc.h(state_register)
-    qc.append(
-        ZGate().control(nb_state_qubits),
-        [state_register[i] for i in range(nb_state_qubits)]
-    )
+    qc.mcx([state_register[i] for i in range(nb_state_qubits-1)], state_register[nb_state_qubits-1])
     qc.h(state_register)
 
     return qc.to_gate()
@@ -35,9 +32,8 @@ def GroverDiffusionGate(oracle_gate: Gate, nb_state_qubits: int) -> Gate:
 def GroverSearcher(oracle_gate: Gate, nb_state_qubits: int) -> Gate:
     state_register = QuantumRegister(nb_state_qubits, 'state')
     ancilla_register = QuantumRegister(1, 'ancilla')
-    classical_register = ClassicalRegister(nb_state_qubits, 'classical')
 
-    qc = QuantumCircuit(state_register, ancilla_register, classical_register)
+    qc = QuantumCircuit(state_register, ancilla_register)
 
     # state preparation
     qc.h(state_register)
@@ -50,7 +46,5 @@ def GroverSearcher(oracle_gate: Gate, nb_state_qubits: int) -> Gate:
             GroverDiffusionGate(oracle_gate, nb_state_qubits),
             [state_register[i] for i in range(nb_state_qubits)] + [ancilla_register]
         )
-
-    qc.measure(state_register, classical_register)
 
     return qc.to_gate()

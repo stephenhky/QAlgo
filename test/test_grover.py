@@ -1,5 +1,6 @@
 
-from qiskit.circuit import QuantumRegister, QuantumCircuit, ClassicalRegister, transpile
+from qiskit.circuit import QuantumRegister, QuantumCircuit, ClassicalRegister
+from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
 from qiskit.circuit.library import CZGate
 
@@ -16,7 +17,11 @@ def test_grover_11():
     ancilla_register = QuantumRegister(1)
     classical_register = ClassicalRegister(2)
     qc = QuantumCircuit(state_registry, ancilla_register, classical_register)
-    qc.append(grover_searcher, [state_registry, ancilla_register, classical_register])
+    qc.append(
+        grover_searcher,
+        [state_registry[i] for i in range(2)] + [ancilla_register]
+    )
+    qc.measure(state_registry, classical_register)
 
     # simulation
     nbshots = 1024
