@@ -5,7 +5,7 @@ from qiskit.circuit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
 
-from qalgo.random import perfect_coin_gate
+from qalgo.random import PerfectCoinGate
 
 
 def test_perfect_coin() -> None:
@@ -13,7 +13,7 @@ def test_perfect_coin() -> None:
     qr = QuantumRegister(1)
     cr = ClassicalRegister(1)
     qc = QuantumCircuit(qr, cr)
-    qc.append(perfect_coin_gate(), [qr[0]])
+    qc.append(PerfectCoinGate(), [qr[0]])
     qc.measure(qr[0], cr[0])
 
     # simulation

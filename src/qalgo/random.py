@@ -2,7 +2,7 @@
 from qiskit.circuit import Gate, QuantumCircuit, QuantumRegister
 
 
-def perfect_coin_gate() -> Gate:
+def PerfectCoinGate() -> Gate:
     qr = QuantumRegister(1)
     qc = QuantumCircuit(qr)
     qc.h(qr[0])
