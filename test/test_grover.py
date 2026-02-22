@@ -1,14 +1,14 @@
 
-from qiskit import QuantumRegister, QuantumCircuit, ClassicalRegister, transpile
+from qiskit.circuit import QuantumRegister, QuantumCircuit, ClassicalRegister, transpile
 from qiskit_aer import StatevectorSimulator
-from qiskit.circuit.library import ZGate
+from qiskit.circuit.library import CZGate
 
 from qalgo.grover import GroverDiffusionGate, GroverSearcher
 
 
 def test_grover_11():
-    # define the Oracle for 11
-    oracle_gate = ZGate().control(2)
+    # define the oracle
+    oracle_gate = CZGate()
 
     # build the circuit
     grover_searcher = GroverSearcher(oracle_gate, 2)

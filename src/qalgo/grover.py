@@ -16,14 +16,17 @@ def GroverDiffusionGate(oracle_gate: Gate, nb_state_qubits: int) -> Gate:
     qc = QuantumCircuit(state_register, ancilla_register)
 
     if oracle_gate.num_qubits == nb_state_qubits:   # phase oracle
-        qc.append(oracle_gate, [state_register])
+        qc.append(oracle_gate, [state_register[i] for i in range(nb_state_qubits)])
     elif oracle_gate.num_qubits == nb_state_qubits + 1:   # boolean oracle
         qc.append(oracle_gate)
     else:
         raise WrongQubitNumberException()
 
     qc.h(state_register)
-    qc.append(ZGate().control(nb_state_qubits),[state_register])
+    qc.append(
+        ZGate().control(nb_state_qubits),
+        [state_register[i] for i in range(nb_state_qubits)]
+    )
     qc.h(state_register)
 
     return qc.to_gate()
@@ -45,7 +48,7 @@ def GroverSearcher(oracle_gate: Gate, nb_state_qubits: int) -> Gate:
     for _ in range(nb_iters):
         qc.append(
             GroverDiffusionGate(oracle_gate, nb_state_qubits),
-            [state_register, ancilla_register]
+            [state_register[i] for i in range(nb_state_qubits)] + [ancilla_register]
         )
 
     qc.measure(state_register, classical_register)
