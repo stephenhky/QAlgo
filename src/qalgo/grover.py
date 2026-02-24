@@ -23,7 +23,11 @@ def GroverDiffusionGate(oracle_gate: Gate, nb_state_qubits: int) -> Gate:
         raise WrongQubitNumberException()
 
     qc.h(state_register)
+    qc.x(state_register)
+    qc.h(state_register[nb_state_qubits-1])
     qc.mcx([state_register[i] for i in range(nb_state_qubits-1)], state_register[nb_state_qubits-1])
+    qc.h(state_register[nb_state_qubits-1])
+    qc.x(state_register)
     qc.h(state_register)
 
     return qc.to_gate()
