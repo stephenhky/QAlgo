@@ -4,7 +4,7 @@ from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
 from qiskit.circuit.library import CZGate
 
-from qalgo.grover import GroverDiffusionGate, GroverSearcher
+from qalgo.grover import GroverSearcher
 
 
 def test_grover_11():
@@ -31,4 +31,6 @@ def test_grover_11():
     result = job.result()
     count_dict = result.get_counts(qc)
 
-    print(count_dict)
+    assert count_dict["11"] > count_dict["00"]
+    assert count_dict["11"] > count_dict["01"]
+    assert count_dict["11"] > count_dict["10"]

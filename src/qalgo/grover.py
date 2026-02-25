@@ -2,7 +2,6 @@
 from math import floor, pi, sqrt
 
 from qiskit.circuit import Gate, QuantumCircuit, QuantumRegister
-from qiskit.circuit.library import ZGate
 
 
 class WrongQubitNumberException(Exception):
