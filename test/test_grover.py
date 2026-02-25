@@ -32,6 +32,8 @@ def test_grover_11():
     result = job.result()
     count_dict = result.get_counts(qc)
 
+    logger.info(count_dict)
+
     assert count_dict["011"] + count_dict["111"] > count_dict["000"] + count_dict["100"]
     assert count_dict["011"] + count_dict["111"] > count_dict["001"] + count_dict["101"]
     assert count_dict["011"] + count_dict["111"] > count_dict["010"] + count_dict["110"]
