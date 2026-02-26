@@ -3,7 +3,6 @@ from qiskit.circuit import QuantumRegister, QuantumCircuit, ClassicalRegister
 from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
 from qiskit.circuit.library import CZGate
-from loguru import logger
 
 from qalgo.grover import GroverSearcher
 
