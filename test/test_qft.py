@@ -36,6 +36,6 @@ def test_2qubit_qft_2():
     )
     np.testing.assert_array_almost_equal(
         qft_statevector.data,
-        np.array([1., 0., -1., 0.]) * np.sqrt(0.5)
+        np.array([1., -0.5+0.5j, 0., -0.5-0.5j]) * np.sqrt(0.5)
     )
 
