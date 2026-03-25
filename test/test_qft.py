@@ -73,3 +73,36 @@ def test_2qubit_qiskitqftgate_2():
         qft_statevector.data,
         np.array([1., -0.5 + 0.5j, 0., -0.5 - 0.5j]) * np.sqrt(0.5)
     )
+
+
+def test_2qubit_qft_3():
+    qr = QuantumRegister(3)
+    qc = QuantumCircuit(qr)
+    qc.append(QFTGate(3), [qr[0], qr[1], qr[2]])
+    qft_statevector = Statevector(qc)
+
+    np.testing.assert_array_almost_equal(
+        qft_statevector.data,
+        np.repeat(np.sqrt(0.125), 8)
+    )
+
+
+def test_2qubit_qft_3():
+    qr = QuantumRegister(3)
+    qc = QuantumCircuit(qr)
+    qc.h(qr[0])
+    qc.cx(qr[0], qr[1])
+    qc.cx(qr[0], qr[2])    # GHZ state
+    ghz_statevector = Statevector(qc)
+
+    qc.append(QFTGate(3), [qr[0], qr[1], qr[2]])
+    qft_statevector = Statevector(qc)
+
+    np.testing.assert_array_almost_equal(
+        ghz_statevector.data,
+        np.array([1., 0., 0., 0., 0., 0., 0., 1.]) * np.sqrt(0.5)
+    )
+    np.testing.assert_array_almost_equal(
+        qft_statevector.data,
+        np.array([0., np.sqrt(0.5)*(1.-1.j), -1.j, -np.sqrt(0.5)*(1+1.j), -1., np.sqrt(0.5)*(-1+1.j), 1.j, np.sqrt(0.5)*(1+1.j)])
+    )
