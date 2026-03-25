@@ -87,7 +87,7 @@ def test_2qubit_qft_3():
     )
 
 
-def test_2qubit_qft_3():
+def test_2qubit_qft_4():
     qr = QuantumRegister(3)
     qc = QuantumCircuit(qr)
     qc.h(qr[0])
