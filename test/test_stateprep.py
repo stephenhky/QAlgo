@@ -8,7 +8,7 @@ from qalgo.stateprep import GHZState
 
 def test_2qubit_ghz_state():
     qc = QuantumCircuit(2)
-    qc.append(GHZState(2))
+    qc.append(GHZState(2), [0, 1])
     statevector = Statevector(qc)
     np.testing.assert_array_almost_equal(
         statevector.data,
@@ -18,7 +18,7 @@ def test_2qubit_ghz_state():
 
 def test_3qubit_ghz_state():
     qc = QuantumCircuit(3)
-    qc.append(GHZState(3))
+    qc.append(GHZState(3), [0, 1, 2])
     statevector = Statevector(qc)
     np.testing.assert_array_almost_equal(
         statevector.data,
