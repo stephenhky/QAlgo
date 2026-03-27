@@ -5,6 +5,7 @@ from qiskit.quantum_info import Statevector
 from qiskit.circuit.library import QFTGate
 
 from qalgo.qft import QuantumFourierTransformGate
+from qalgo.stateprep import GHZState
 
 
 def test_2qubit_qft_1():
@@ -34,9 +35,7 @@ def test_2qubit_qiskitqftgate_1():
 def test_2qubit_qft_2():
     qr = QuantumRegister(2)
     qc = QuantumCircuit(qr)
-    qc.h(0)
-    qc.cx(0, 1)
-    qc.x(0)    # a singlet state at this point
+    qc.append(GHZState(2), [qr[0], qr[1]])   # a singlet state at this point
     singlet_statevector = Statevector(qc)
 
     # apply QFT gate
@@ -56,9 +55,7 @@ def test_2qubit_qft_2():
 def test_2qubit_qiskitqftgate_2():
     qr = QuantumRegister(2)
     qc = QuantumCircuit(qr)
-    qc.h(0)
-    qc.cx(0, 1)
-    qc.x(0)    # a singlet state at this point
+    qc.append(GHZState(2), [qr[0], qr[1]])   # a singlet state at this point
     singlet_statevector = Statevector(qc)
 
     # apply the QFT gate
@@ -103,13 +100,13 @@ def test_2qubit_qft_4():
     qr = QuantumRegister(3)
     qc = QuantumCircuit(qr)
     qc.x(qr)    # |111>
-    ghz_statevector = Statevector(qc)
+    allone_statevector = Statevector(qc)
 
     qc.append(QuantumFourierTransformGate(3), [qr[0], qr[1], qr[2]])
     qft_statevector = Statevector(qc)
 
     np.testing.assert_array_almost_equal(
-        ghz_statevector.data,
+        allone_statevector.data,
         np.array([0., 0., 0., 0., 0., 0., 0., 1.])
     )
     np.testing.assert_array_almost_equal(
@@ -123,13 +120,13 @@ def test_2qubit_qiskitqft_4():
     qr = QuantumRegister(3)
     qc = QuantumCircuit(qr)
     qc.x(qr)    # |111>
-    ghz_statevector = Statevector(qc)
+    allone_statevector = Statevector(qc)
 
     qc.append(QFTGate(3), [qr[0], qr[1], qr[2]])
     qft_statevector = Statevector(qc)
 
     np.testing.assert_array_almost_equal(
-        ghz_statevector.data,
+        allone_statevector.data,
         np.array([0., 0., 0., 0., 0., 0., 0., 1.])
     )
     np.testing.assert_array_almost_equal(
@@ -142,9 +139,7 @@ def test_2qubit_qiskitqft_4():
 def test_2qubit_qft_5():
     qr = QuantumRegister(3)
     qc = QuantumCircuit(qr)
-    qc.h(qr[0])
-    qc.cx(qr[0], qr[1])
-    qc.cx(qr[0], qr[2])    # GHZ state
+    qc.append(GHZState(3), [0, 1, 2])     # GHZ state
     ghz_statevector = Statevector(qc)
 
     qc.append(QuantumFourierTransformGate(3), [qr[0], qr[1], qr[2]])
@@ -166,9 +161,7 @@ def test_2qubit_qft_5():
 def test_2qubit_qiskitqft_5():
     qr = QuantumRegister(3)
     qc = QuantumCircuit(qr)
-    qc.h(qr[0])
-    qc.cx(qr[0], qr[1])
-    qc.cx(qr[0], qr[2])    # GHZ state
+    qc.append(GHZState(3), [0, 1, 2])     # GHZ state
     ghz_statevector = Statevector(qc)
 
     qc.append(QFTGate(3), [qr[0], qr[1], qr[2]])
