@@ -10,6 +10,6 @@ def PhaseEstimationGate(nbphasedigits: int, nbstatequbits: int) -> Gate:
     qc = QuantumCircuit(phase_qregisters, state_qregisters, cregisters)
     qc.h([phase_qregisters[i] for i in range(phase_qregisters.size)])
     for i in range(nbphasedigits):
-        qc.cu(0., 0., np.pi / 2 ** (i + 1), 0., phase_qregisters[i],
+        qc.cu(0., 0., np.pi * (2**i), 0., phase_qregisters[i],
               [state_qregisters[j] for j in range(nbstatequbits)])
 
