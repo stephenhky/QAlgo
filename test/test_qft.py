@@ -11,7 +11,7 @@ from qalgo.stateprep import GHZState
 def test_2qubit_qft_1():
     qr = QuantumRegister(2)
     qc = QuantumCircuit(qr)
-    qc.append(QuantumFourierTransformGate(2), [qr])
+    qc.append(QuantumFourierTransformGate(2), qr)
 
     statevector = Statevector(qc)
     np.testing.assert_array_almost_equal(
