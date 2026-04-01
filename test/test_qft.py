@@ -94,7 +94,7 @@ def test_2qubit_inverseqft_2():
     singlet_statevector = Statevector(qc)
 
     # apply QFT gate
-    qc.append(QuantumFourierTransformGate(2), [qr[0], qr[1]])
+    qc.append(QuantumFourierTransformGate(2, inverse=True), qr)
     qft_statevector = Statevector(qc)
 
     np.testing.assert_array_almost_equal(
@@ -221,7 +221,7 @@ def test_2qubit_inverseqft_5():
     qc.append(GHZState(3), qr)     # GHZ state
     ghz_statevector = Statevector(qc)
 
-    qc.append(QuantumFourierTransformGate(3), qr)
+    qc.append(QuantumFourierTransformGate(3, inverse=True), qr)
     qft_statevector = Statevector(qc)
 
     np.testing.assert_array_almost_equal(
