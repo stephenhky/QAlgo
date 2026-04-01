@@ -5,7 +5,7 @@ from qiskit.quantum_info import Statevector
 from qiskit.circuit.library import QFTGate
 
 from qalgo.qft import QuantumFourierTransformGate
-from qalgo.stateprep import GHZState
+from qalgo.stateprep import GHZState, SingletState
 
 
 def test_2qubit_qft_1():
@@ -47,8 +47,7 @@ def test_2qubit_inverseqft_1():
 def test_2qubit_qft_2():
     qr = QuantumRegister(2)
     qc = QuantumCircuit(qr)
-    qc.append(GHZState(2), qr)
-    qc.x(qr[0])          # a singlet state at this point
+    qc.append(SingletState(), qr)     # a singlet state at this point
     singlet_statevector = Statevector(qc)
 
     # apply QFT gate
@@ -68,8 +67,7 @@ def test_2qubit_qft_2():
 def test_2qubit_qiskitqftgate_2():
     qr = QuantumRegister(2)
     qc = QuantumCircuit(qr)
-    qc.append(GHZState(2), qr)
-    qc.x(qr[0])         # a singlet state at this point
+    qc.append(SingletState(), qr)      # a singlet state at this point
     singlet_statevector = Statevector(qc)
 
     # apply the QFT gate
@@ -89,8 +87,7 @@ def test_2qubit_qiskitqftgate_2():
 def test_2qubit_inverseqft_2():
     qr = QuantumRegister(2)
     qc = QuantumCircuit(qr)
-    qc.append(GHZState(2), qr)
-    qc.x(qr[0])    # a singlet state at this point
+    qc.append(SingletState(), qr)     # a singlet state at this point
     singlet_statevector = Statevector(qc)
 
     # apply QFT gate
