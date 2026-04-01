@@ -1,6 +1,5 @@
 
-import numpy as np
-from qiskit.circuit import QuantumCircuit, QuantumRegister, ClassicalRegister, Gate
+from qiskit.circuit import QuantumCircuit, QuantumRegister, Gate
 
 from .qft import QuantumFourierTransformGate
 
@@ -10,8 +9,9 @@ def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: in
 
     phase_qregisters = QuantumRegister(nbphasedigits)
     state_qregisters = QuantumRegister(nbstatequbits)
-    cregisters = ClassicalRegister(nbphasedigits)
-    qc = QuantumCircuit(phase_qregisters, state_qregisters, cregisters)
+    # cregisters = ClassicalRegister(nbphasedigits)
+    # qc = QuantumCircuit(phase_qregisters, state_qregisters, cregisters)
+    qc = QuantumCircuit(phase_qregisters, state_qregisters)
     qc.h(phase_qregisters)
     for i in range(nbphasedigits):
         qc.append(
@@ -19,5 +19,6 @@ def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: in
             [phase_qregisters[i]] + [state_qregisters[j] for j in range(nbstatequbits)]
         )
 
-    qc.append(QuantumFourierTransformGate(phase_qregisters.size), [phase_qregisters])
-
+    qc.append(QuantumFourierTransformGate(phase_qregisters.size), phase_qregisters)
+    # qc.measure(phase_qregisters, cregisters)
+    return qc.to_gate()
