@@ -3,6 +3,7 @@ from operator import itemgetter
 
 from qiskit.circuit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit.circuit.library import TGate
+from qiskit.quantum_info import Statevector
 from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
 
@@ -19,6 +20,7 @@ def test_phase_T0():
         PhaseEstimationGate(TGate(), 4, 1),
         [phase_register[0], phase_register[1], phase_register[2], phase_register[3], state_register[0]]
     )
+    phase_statevector = Statevector(phase_register)
     quantum_circuit.measure(phase_register, classical_register)
 
     # simulation
@@ -30,6 +32,7 @@ def test_phase_T0():
     count_dict = result.get_counts(quantum_circuit)
 
     # statistics test
+    print(phase_statevector.data)
     print(count_dict)
     greatest_state_count = max(count_dict.items(), key=itemgetter(1))
     assert greatest_state_count[0] == "0000"
@@ -46,6 +49,7 @@ def test_phase_T1():
         PhaseEstimationGate(TGate(), 4, 1),
         [phase_register[0], phase_register[1], phase_register[2], phase_register[3], state_register[0]]
     )
+    phase_statevector = Statevector(phase_register)
     quantum_circuit.measure(phase_register, classical_register)
 
     # simulation
@@ -57,6 +61,7 @@ def test_phase_T1():
     count_dict = result.get_counts(quantum_circuit)
 
     # statistics test
+    print(phase_statevector.data)
     print(count_dict)
     greatest_state_count = max(count_dict.items(), key=itemgetter(1))
     assert greatest_state_count[0] == "0010"
