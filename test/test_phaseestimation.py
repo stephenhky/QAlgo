@@ -20,7 +20,7 @@ def test_phase_T0():
         PhaseEstimationGate(TGate(), 4, 1),
         [phase_register[0], phase_register[1], phase_register[2], phase_register[3], state_register[0]]
     )
-    phase_statevector = Statevector(phase_register)
+    phase_statevector = Statevector(quantum_circuit)
     quantum_circuit.measure(phase_register, classical_register)
 
     # simulation
@@ -49,7 +49,7 @@ def test_phase_T1():
         PhaseEstimationGate(TGate(), 4, 1),
         [phase_register[0], phase_register[1], phase_register[2], phase_register[3], state_register[0]]
     )
-    phase_statevector = Statevector(phase_register)
+    phase_statevector = Statevector(quantum_circuit)
     quantum_circuit.measure(phase_register, classical_register)
 
     # simulation
