@@ -6,6 +6,7 @@ from qiskit.circuit.library import TGate
 from qiskit.quantum_info import Statevector
 from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
+from loguru import logger
 
 from qalgo.phase import PhaseEstimationGate
 
@@ -32,8 +33,8 @@ def test_phase_T0():
     count_dict = result.get_counts(quantum_circuit)
 
     # statistics test
-    print(phase_statevector.data)
-    print(count_dict)
+    logger.info(phase_statevector.data)
+    logger.info(count_dict)
     greatest_state_count = max(count_dict.items(), key=itemgetter(1))
     assert greatest_state_count[0] == "0000"
 
@@ -61,7 +62,7 @@ def test_phase_T1():
     count_dict = result.get_counts(quantum_circuit)
 
     # statistics test
-    print(phase_statevector.data)
-    print(count_dict)
+    logger.info(phase_statevector.data)
+    logger.info(count_dict)
     greatest_state_count = max(count_dict.items(), key=itemgetter(1))
     assert greatest_state_count[0] == "0010"
