@@ -232,3 +232,25 @@ def test_2qubit_inverseqft_5():
              0., 0.25*np.sqrt(0.5)*(np.sqrt(2.)-1-1.j),  0.25*(1.-1.j), 0.25*np.sqrt(0.5)*(np.sqrt(2.)+1-1.j)]
         )
     )
+
+
+def test_2qubit_qiskitinverseqft_5():
+    qr = QuantumRegister(3)
+    qc = QuantumCircuit(qr)
+    qc.append(GHZState(3), qr)     # GHZ state
+    ghz_statevector = Statevector(qc)
+
+    qc.append(QFTGate(3).inverse(True), qr)
+    qft_statevector = Statevector(qc)
+
+    np.testing.assert_array_almost_equal(
+        ghz_statevector.data,
+        np.array([1., 0., 0., 0., 0., 0., 0., 1.]) * np.sqrt(0.5)
+    )
+    np.testing.assert_array_almost_equal(
+        qft_statevector.data,
+        np.array(
+            [0.5, 0.25*np.sqrt(0.5)*(np.sqrt(2.)+1+1.j), 0.25*(1.+1.j), 0.25*np.sqrt(0.5)*(np.sqrt(2.)-1+1.j),
+             0., 0.25*np.sqrt(0.5)*(np.sqrt(2.)-1-1.j),  0.25*(1.-1.j), 0.25*np.sqrt(0.5)*(np.sqrt(2.)+1-1.j)]
+        )
+    )
