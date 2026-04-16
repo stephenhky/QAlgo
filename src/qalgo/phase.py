@@ -1,8 +1,8 @@
 
 from qiskit.circuit import QuantumCircuit, QuantumRegister, Gate
-from qiskit.circuit.library import QFTGate
+# from qiskit.circuit.library import QFTGate
 
-# from .qft import QuantumFourierTransformGate
+from .qft import QuantumFourierTransformGate
 
 
 def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: int) -> Gate:
@@ -20,12 +20,12 @@ def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: in
         )
         repetitions *= 2
 
-    # qc.append(
-    #     QuantumFourierTransformGate(phase_qregisters.size, inverse=True),
-    #     [phase_qregisters[i] for i in range(nbphasedigits)]
-    # )
     qc.append(
-        QFTGate(phase_qregisters.size).inverse(True),
+        QuantumFourierTransformGate(phase_qregisters.size, inverse=True),
         [phase_qregisters[i] for i in range(nbphasedigits)]
     )
+    # qc.append(
+    #     QFTGate(phase_qregisters.size).inverse(True),
+    #     [phase_qregisters[i] for i in range(nbphasedigits)]
+    # )
     return qc.to_gate()

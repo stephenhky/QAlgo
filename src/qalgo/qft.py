@@ -10,7 +10,13 @@ def QuantumFourierTransformGate(nbqubits: int, inverse: bool = False) -> Gate:
     register = QuantumRegister(nbqubits)
     qc = QuantumCircuit(register)
 
-    sgn = -1 if inverse else 1
+    if inverse:
+        for i in range(nbqubits // 2):
+            qc.swap(register[i], register[nbqubits-1-i])
+        sgn = -1
+    else:
+        sgn = 1
+
     for i in range(nbqubits):
         qc.h(register[i])
         if i < nbqubits - 1:
