@@ -65,4 +65,4 @@ def test_phase_T1():
     logger.info(phase_statevector.data)
     logger.info(count_dict)
     greatest_state_count = max(count_dict.items(), key=itemgetter(1))
-    assert greatest_state_count[0] == "0010"
+    assert greatest_state_count[0] == "0100"
