@@ -11,11 +11,16 @@ def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: in
     state_qregisters = QuantumRegister(nbstatequbits)
     qc = QuantumCircuit(phase_qregisters, state_qregisters)
     qc.h(phase_qregisters)
+    repetitions = 1
     for i in range(nbphasedigits):
         qc.append(
-            controlled_oracle_gate.power(2**i),
+            controlled_oracle_gate.power(repetitions),
             [phase_qregisters[i]] + [state_qregisters[j] for j in range(nbstatequbits)]
         )
+        repetitions *= 2
 
-    qc.append(QuantumFourierTransformGate(phase_qregisters.size, inverse=True), phase_qregisters)
+    qc.append(
+        QuantumFourierTransformGate(phase_qregisters.size, inverse=True),
+        [phase_qregisters[i] for i in range(nbphasedigits)]
+    )
     return qc.to_gate()
