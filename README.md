@@ -1,5 +1,7 @@
 # QAlgo
 
-A collection of basic quantum algorithms for my practice.
+This is a Python package, and acollection of basic 
+quantum algorithms for my practice. The algorithms are
+implemented using IBM Qiskit library.
 
-This is a Python package, but I will not publish to PyPI.
+Although this is a Python package, I will not publish to PyPI.
