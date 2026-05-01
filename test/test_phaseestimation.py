@@ -2,7 +2,7 @@
 from operator import itemgetter
 
 from qiskit.circuit import QuantumCircuit, QuantumRegister, ClassicalRegister
-from qiskit.circuit.library import TGate
+from qiskit.circuit.library import TGate, phase_estimation
 from qiskit.quantum_info import Statevector
 from qiskit import transpile
 from qiskit_aer import StatevectorSimulator
@@ -66,3 +66,41 @@ def test_phase_T1():
     logger.info(count_dict)
     greatest_state_count = max(count_dict.items(), key=itemgetter(1))
     assert greatest_state_count[0] == "0010"
+
+
+def test_phase_T1_qiskit():
+    phase_register = QuantumRegister(4)
+    state_register = QuantumRegister(1)
+    classical_register = ClassicalRegister(4)
+
+    # unitary gate
+    t_gate_qcircuit = QuantumCircuit(1, name="T_Gate")
+    t_gate_qcircuit.t(0)
+
+    # state preparation
+    state_prep = QuantumCircuit(state_register, name="eigenstate")
+    state_prep.x(0)
+
+    # phase estimation gate
+    qpe_circuit = phase_estimation(num_evaluation_qubits=4, unitary=t_gate_qcircuit)
+
+    # full circuit
+    full_circuit = QuantumCircuit(phase_register, state_register)
+    full_circuit.compose(state_prep, qubits=[state_register], inplace=True)
+    full_circuit.compose(qpe_circuit, inplace=True)
+
+    # measurement
+    full_circuit.measure_all()
+
+    # simulation
+    nbshots = 1024
+    simulator = StatevectorSimulator(max_shot_size=1024)
+    transpiled_qc = transpile(full_circuit, simulator, optimization_level=0)
+    job = simulator.run(transpiled_qc, shots=nbshots)
+    result = job.result()
+    count_dict = result.get_counts(full_circuit)
+
+    # statistics test
+    logger.info(count_dict)
+    greatest_state_count = max(count_dict.items(), key=itemgetter(1))
+    assert greatest_state_count[0] == "10010"
