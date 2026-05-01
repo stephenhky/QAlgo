@@ -69,24 +69,20 @@ def test_phase_T1():
 
 
 def test_phase_T1_qiskit():
-    phase_register = QuantumRegister(4)
-    state_register = QuantumRegister(1)
-    classical_register = ClassicalRegister(4)
-
     # unitary gate
     t_gate_qcircuit = QuantumCircuit(1, name="T_Gate")
     t_gate_qcircuit.t(0)
 
     # state preparation
-    state_prep = QuantumCircuit(state_register, name="eigenstate")
+    state_prep = QuantumCircuit(1, name="eigenstate")
     state_prep.x(0)
 
     # phase estimation gate
     qpe_circuit = phase_estimation(num_evaluation_qubits=4, unitary=t_gate_qcircuit)
 
     # full circuit
-    full_circuit = QuantumCircuit(phase_register, state_register)
-    full_circuit.compose(state_prep, qubits=[state_register], inplace=True)
+    full_circuit = QuantumCircuit(4+1)
+    full_circuit.compose(state_prep, qubits=[4], inplace=True)
     full_circuit.compose(qpe_circuit, inplace=True)
 
     # measurement
