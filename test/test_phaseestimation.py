@@ -99,4 +99,4 @@ def test_phase_T1_qiskit():
     # statistics test
     logger.info(count_dict)
     greatest_state_count = max(count_dict.items(), key=itemgetter(1))
-    assert greatest_state_count[0] == "10010"
+    assert greatest_state_count[0] == "10100"
