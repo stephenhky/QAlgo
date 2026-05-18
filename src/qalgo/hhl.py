@@ -18,7 +18,7 @@ def HHLGate(
         time: float | np.float64 = 2*np.pi/4
 ) -> Gate:
     assert nb_ancilla == 1     # ancilla must have only one qubit
-    assert np.testing.assert_array_almost_equal(A, A.conj().T)   # test Hermitianity
+    np.testing.assert_array_almost_equal(A, A.conj().T)   # test Hermitianity
 
     # initiating the circuit
     b_register = QuantumRegister(nb_b)
