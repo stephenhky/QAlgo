@@ -6,7 +6,7 @@ from .qft import QuantumFourierTransformGate
 
 
 def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: int) -> Gate:
-    controlled_oracle_gate = oracle_gate.control(1)
+    controlled_oracle_gate = oracle_gate.control(num_ctrl_qubits=1)
 
     phase_qregisters = QuantumRegister(nbphasedigits)
     state_qregisters = QuantumRegister(nbstatequbits)
