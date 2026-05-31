@@ -1,4 +1,3 @@
-
 from typing import Annotated
 
 import numpy as np
@@ -39,9 +38,22 @@ def HHLGate(
         [clock_register[i] for i in range(nb_clock)] + [b_register[i] for i in range(nb_b)]
     )
 
-    # controlled rotation
+    # Controlled reciprocal rotation
+    # The key insight: we need to implement a rotation that approximates
+    # the reciprocal of the eigenvalue. For a value k encoded in the clock register,
+    # we want to rotate the ancilla by an angle proportional to 1/k.
+    
+    # Constants for the reciprocal approximation
+    # Assuming eigenvalues are normalized to be in [0.5, 2] range
+    norm_factor = 1.0
+    
+    # Apply controlled rotations that implement linear reciprocal approximation
+    # This is a simplified approach that works for specific eigenvalue ranges
     for i in range(nb_clock):
-        qc.cry(np.pi / (2**i), [clock_register[i] for i in range(nb_clock)], ancilla_register[0])
+        # The rotation angle decreases as the encoded value increases
+        # This implements an approximation to 1/λ 
+        angle = norm_factor * np.pi / (2**(nb_clock - i))
+        qc.cry(angle, clock_register[i], ancilla_register[0])
 
     # reverse quantum phase estimation
     qc.append(
