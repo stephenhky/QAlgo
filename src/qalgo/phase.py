@@ -38,7 +38,7 @@ def InversePhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequb
     state_qregisters = QuantumRegister(nbstatequbits)
     qc = QuantumCircuit(phase_qregisters, state_qregisters)
     qc.append(
-        QuantumFourierTransformGate(phase_qregisters.size, inverse=False),
+        QuantumFourierTransformGate(phase_qregisters.size, inverse=True).inverse(),
         [phase_qregisters[i] for i in range(nbphasedigits)]
     )
 
