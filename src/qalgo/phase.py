@@ -6,7 +6,7 @@ from .qft import QuantumFourierTransformGate
 
 
 def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: int) -> Gate:
-    controlled_oracle_gate = oracle_gate.control(1)
+    controlled_oracle_gate = oracle_gate.control(num_ctrl_qubits=1)
 
     phase_qregisters = QuantumRegister(nbphasedigits)
     state_qregisters = QuantumRegister(nbstatequbits)
@@ -28,4 +28,28 @@ def PhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: in
     #     QFTGate(phase_qregisters.size).inverse(True),
     #     [phase_qregisters[i] for i in range(nbphasedigits)]
     # )
+    return qc.to_gate()
+
+
+def InversePhaseEstimationGate(oracle_gate: Gate, nbphasedigits: int, nbstatequbits: int) -> Gate:
+    controlled_oracle_gate = oracle_gate.control(1)
+
+    phase_qregisters = QuantumRegister(nbphasedigits)
+    state_qregisters = QuantumRegister(nbstatequbits)
+    qc = QuantumCircuit(phase_qregisters, state_qregisters)
+    qc.append(
+        QuantumFourierTransformGate(phase_qregisters.size, inverse=True).inverse(),
+        [phase_qregisters[i] for i in range(nbphasedigits)]
+    )
+
+    repetitions = 1
+    for i in range(nbphasedigits):
+        qc.append(
+            controlled_oracle_gate.power(repetitions),
+            [phase_qregisters[i]] + [state_qregisters[j] for j in range(nbstatequbits)]
+        )
+        repetitions *= 2
+
+    qc.h(phase_qregisters)
+
     return qc.to_gate()
